@@ -1,0 +1,845 @@
+
+
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Key Hiring Trends in Fintech</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="/static/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab title="Key Hiring Trends in Fintech"
+                  environment="web"
+                  feedback-link="https://github.com/phadkeraj/A1_HiringTrends">
+    
+      <google-codelab-step label="Introduction" duration="0">
+        <p>This analysis revolves around finding the job  hiring trends in Northern Trust and M&amp;T bank with respect to a specific domain called fintech. With changing demographics, automation efforts and demand for new products and services, large financial institutions are realizing the power of technologies like data science, AI, cloud technologies and machine learning and are heavily investing to upgrade their technological platforms to cater to the upcoming revolution. Technology has been a key player in helping drive this revolution.  Things are fast evolving and as we enter 2019, it is interesting to understand the hiring trends in the top financial institutions in the US.</p>
+<h2><strong>What is fintech?</strong></h2>
+<p>Fintech is:</p>
+<ul>
+<li>Small , technology enabled new entrant to financial services.</li>
+<li>Application of new technology to automate financial services.</li>
+</ul>
+<p>Fintech  is the new technology and innovation that aims to compete with traditional financial methods in the delivery of financial services. It is an emerging industry that uses technology to improve activities in finance.The use of smartphones for mobile banking, investing services and cryptocurrency are examples of technologies aiming to make financial services more accessible to the general public.</p>
+<p>This codelab will walk you through creating relevant datasets from pdf files, obtaining keywords from the pfds, as well scraping bank websites, to ensure that your analysis of hiring trends is correct .</p>
+<h2><strong>What you will build</strong></h2>
+<p>In this codelab, you&#39;re going to build analysis of hiring trends in Northern Trust and M&amp;T bank. You&#39;ll :</p>
+<ul>
+<li>Extract relevant datasets from pdfs..</li>
+<li>Obtain word count , text rank and tf/idf from csv&#39;s.</li>
+<li>Classifying the words on basis of their occurence.</li>
+<li>Scrape data from bank websites</li>
+<li>Analyse the results.</li>
+</ul>
+<p><img style="max-width: 624.00px" src="https://lh3.googleusercontent.com/XeXGAD4dd6I1r5DryteshVQRUqFOWVHgItpuF3rJbI6t6x04eKVDbAcgDThF5bWzJPIIWP313S6vWTez1WvM8xVCV1zxnNx80gQUhYG34DxSHeJXEXclHwa3XIxqeuNryyTMe9D1"></p>
+<h2 class="checklist"><strong>What you&#39;ll learn</strong></h2>
+<ul class="checklist">
+<li>How to use python to get relevant datasets from pdfs.</li>
+<li>How to clean raw data</li>
+<li>How to obtain word count , tf/idf and text rank from csv files</li>
+<li>How to build a scraper to scrape the data from the bank websites.</li>
+</ul>
+<h2><strong>What you&#39;ll need</strong></h2>
+<ul>
+<li>A recent version of Jupyter or python 3.5 or any python coding platform of your choice</li>
+<li>Tableau</li>
+<li><a href="https://github.com/phadkeraj/A1_HiringTrends/tree/master/Code" target="_blank">The sample code</a></li>
+<li>Basic knowledge of Python, Tableau, JavaScript, and MS-Excel</li>
+</ul>
+<p>This codelab is focused on analysis of hiring trends. Non-relevant concepts and code blocks are glossed over and are provided for you to simply copy and paste.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Getting set up" duration="0">
+        <h2><strong>Download the Code</strong></h2>
+<p>Click the following link to download all the code for this codelab:</p>
+<p><a href="https://github.com/phadkeraj/A1_HiringTrends" target="_blank"><paper-button class="colored" raised><iron-icon icon="file-download"></iron-icon>Download source code</paper-button></a></p>
+<p>Unpack the downloaded zip file. This will unpack a root folder (<a href="https://github.com/phadkeraj/A1_HiringTrends" target="_blank">A1_HiringTrends</a>), which contains one folder for each step of this codelab, along with all of the resources you will need.</p>
+<p>The step-NN folders contain the desired end state of each step of this codelab. They are there for reference. We&#39;ll be doing all our coding work in a directory called work.</p>
+<h2><strong>Install and run Jupyter notebook</strong></h2>
+<p>While you&#39;re free to use your own python platform, this codelab is designed to work well with the Jupyter platform.The best way to install Jupyter is to download it from a scientific python distribution which also includes scientific python packages. Anaconda is the most common one.  If you don&#39;t have this app yet ,you can install it from chrome using the following link.</p>
+<p><a href="https://www.anaconda.com/distribution/" target="_blank"><paper-button class="colored" raised>Install Anaconda for installing Jupyter</paper-button></a> </p>
+<p>After installing the anaconda platform click shortcut on the desktop : </p>
+<p><img style="max-width: 134.50px" src="https://lh3.googleusercontent.com/ZGCdcFoTVEwC-5biMAxuzlPlMunQkUw4Wg7ExfTI8bvH1lHpxR1oAeb-5vsPA5uA3vIj8PlkzhAXfLfUMVxzDoe_975cNGxo5BWgAgCTdjKP5gM87p1fnYq8VPRDvlgDtllQ0e0R"></p>
+<aside class="special"><p>More help: <a href="https://jupyter.readthedocs.io/en/latest/architecture/how_jupyter_ipython_work.html" target="_blank">Learn more about Jupyter</a></p>
+</aside>
+<p>Running the Jupyter notebook: </p>
+<p><img alt="Screen Shot 2016-02-18 at 11.45.19 AM.png" style="max-width: 79.50px" src="https://lh4.googleusercontent.com/GHgXh0X7X5sD7Q12S3hcUU4RUKfuKoL0gE7OR_610fbvxgV9zhGr1B3QX2NtMQCOmRQqFITcGUms9AwxdqF32ZwWcuc7RLfIjRcMBwdf9_xBrY6KTqU8dZEvBZhbX12zvs2TnkoZ"></p>
+<p>You&#39;ll see this dialog next, which allows you to configure your Jupyter notebook:</p>
+<p><img alt="Screen Shot 2016-02-18 at 11.48.14 AM.png" style="max-width: 765.71px" src="https://lh5.googleusercontent.com/sjrINivZbtFMVnv-fkmGtiibepXFvR26nYTcOL03BBOxl4VaEWc72uMF5XD7gylg1sE8ve8e37MUCMZPyPCKU4HvO7RbT885DeA7eQRKkMYDdKSHLfn78D9nq_jVhgTVCaNrowIe"></p>
+<p>Click the <strong>okay and dont show again</strong> button, and click on  the <strong>launch </strong>button under <code>jupyter</code> folder. This will enable you to open a jupyter window in your default set browser.</p>
+<p><img style="max-width: 233.00px" src="https://lh4.googleusercontent.com/mS19Lk3z2kHVxWVqpUjB3jXjKF_6sQw1lQG6SGFKsiSqh4IVXzvIniQfAkY8CmPsehMOVnP1TF4cgljF2Goozi-6y8F1PA-Zpm5hRsbJP7s6ooeI94kDjXQPwb9IFreKGXvblkvV"></p>
+<p>Once the jupyter is open click on :</p>
+<p>Then click on the dropdown sign in the <strong>new </strong>button.Then click on Python 3 button.</p>
+<p><img alt="Screen Shot 2016-02-18 at 12.22.18 PM.png" style="max-width: 651.00px" src="https://lh4.googleusercontent.com/R578Klg-gIqt0aV1wrkJsWsPw2xW4b1Jxpwx1kCdBebijV2eGfjZb4Bj0rz2h33JYZ-VLqqU_xkQ-wDxDHV6gHeMV-Tf9fYtV6vKhkXCf_SCyZ9IX8FPqHAImEKe11R7JkHLMdS9"></p>
+<p>Now visit your work site in your jupyter file and copy the code given above:</p>
+<h2><strong>Install and run Tableau</strong></h2>
+<p>Go to the site whose link is given below and sign up for subscription for free.</p>
+<p><a href="https://www.tableau.com/trial/tableau-software" target="_blank"><paper-button class="colored" raised>Install Tableau </paper-button></a> </p>
+<p>Click on <strong>Tableau Public</strong> button</p>
+<p><img style="max-width: 624.00px" src="https://lh3.googleusercontent.com/5OTaLe3FX6YolJ4B2TOiBqEhGWgtu7gxTXsrDYxpoOPfgpFk0NSaT2D35ftKHtCX338JUbBRonzC6X4GN7Q_Ae8BB_ZiFD-W0l77ADQBvTcZCUpgQyxpYRVIAGI3OTKcXuX7NLyn"></p>
+<p>Click on <strong>Download Tableau Public </strong>button</p>
+<p><img style="max-width: 624.00px" src="https://lh4.googleusercontent.com/XbGd3RgkcyQHwMhV8YIO6mSCcygEwd89RMIBxVWsnZZ44r2pLnEr8_4YVeH_MFyGokbmpc9yDExAFai6-YjggQ8lcoGor4cFv6T5OTMRgS2dsiUtnrwIyIcumTVxYrIJfeRJB7cD"></p>
+<p>Once the setup is installed<strong> launch the setup</strong></p>
+<p><img style="max-width: 624.00px" src="https://lh6.googleusercontent.com/96v-KL1lUQRTA-lVC_Al0sGUl4YbG11vsqS0HfmR7zgArfqeFhWexxuD6y7g02yMG5MUr0OL41aAQiiGhjXyETHIarVJMcauTULUU1Ftp3pwbq8PxFwgIKYeKgjvaVMtNhPiTWuX"></p>
+<p>If you have Windows XP or Windows 7 or latest versions of Tableau then there should not be any problem installing it.</p>
+<p><img style="max-width: 624.00px" src="https://lh4.googleusercontent.com/lbtAQ_LxdKhqyE_5GOtKCg5ipFtEzO8AZ58fkEYoR0qy_2tCqXuu2piN5D660mvMlAszfZq4mbXuJs812pg4OZx59mq2XBoOScRGDWH3Oy0oUh5tL2r8Pbeunizpgb3fp59QfmE9"></p>
+<p>Click on <strong>File &gt; New </strong></p>
+<p><img style="max-width: 624.00px" src="https://lh5.googleusercontent.com/us43tfCU8q4ZSyGvLLl9u23mrFLLuDrS2jW2Sx3YeC52ndW0HJPj0RCmdnJ_Zub0QpCMIDy--5vLsqZDlH2AQGVbyelNVHNcFnda6-VdHE8zwHJ1YfhGVZWG02nbn1tmrrmzy1xZ"></p>
+<p><img style="max-width: 624.00px" src="https://lh5.googleusercontent.com/LfIU0vx5B3GcFEg2WdrytEhUcamI_69P28oyDDzWLfdsZ_i-ddm2sl2ijzZPepuYD7h9Adb9xeX8cPZqQ4Mp1DMNAtJF4QaZh0D2-qvZjNeDnom6Wg2XbD2gYvEYgUza4Me6yl3C"></p>
+<aside class="special"><p>From this point forward, all coding of program should be performed using this jupyter notebook unless stated otherwise.</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Building a dictionary of top keywords used frequently in Fintech" duration="0">
+        <h2><strong>Procedure to extract text from all the pdfs</strong></h2>
+<h3>Extracting of texts from pdfs using pdf miner</h3>
+<ol type="1" start="1">
+<li>Read the pdf files in python using pdf miner.</li>
+<li>What is a PDF Miner ?</li>
+</ol>
+<p>PDFMiner is a tool for extracting information from PDF documents. Unlike other PDF-related tools, it focuses entirely on getting and analyzing text data. PDFMiner allows one to obtain the exact location of text in a page, as well as other information such as fonts or lines. It includes a PDF converter that can transform PDF files into other text formats (such as HTML). It has an extensible PDF parser that can be used for other purposes than text analysis.</p>
+<ol type="1" start="3">
+<li>Convert the pdf into text - The pdf is converted into text form and then the text is tokenized so that data can be worked upon.</li>
+</ol>
+<h3>    What is Tokenization of data </h3>
+<p>      Splitting of data into words is called tokenization.A sentence or data can be split into words using the method <strong>word_tokenize():</strong></p>
+<p><strong>Cleaning the raw datasets </strong></p>
+<p>    The datasets need to be cleaned as it is raw data and contains a lot of anomalies like stop words, special characters, repeated words, punctuation,  tags. Tokenization with pos is done.This is done by lemmatizing the data</p>
+<h3>Converting text into lower case</h3>
+<p>    The whole text is converted into lower case so that if there are two same words, one with first letter in upper case and the other with first letter in lower case , the algorithm should treat it the same way. </p>
+<h3>Lemmatizing data </h3>
+<p>Lemmatization is used to prepare words, texts and documents for further processing. This is done by importing nltk package . Natural Language Tool Kit (nltk) is to make programs that work with natural language.</p>
+<p>You can install nltk using pip installer if it is not installed in your Python installation. To test the installation:<br><br>1. Open your Python IDE or the CLI interface (whichever you use normally)<br>2. Type import nltk and press enter if no message of missing nltk is shown then nltk is installed on your computer.</p>
+<p>Now after installation, you can use the nltk library for Stemming and Lemmatization using Python. </p>
+<pre><code>    def extract_text_from_pdf(pdf_path):
+    resource_manager = PDFResourceManager()
+    fake_file_handle = io.StringIO()
+    codec = &#39;utf-8&#39;
+    laparams = LAParams()
+    converter = TextConverter(resource_manager, fake_file_handle,codec=codec, laparams=laparams)
+    page_interpreter = PDFPageInterpreter(resource_manager, converter)
+
+    with open(pdf_path, &#39;rb&#39;) as fh:
+        for page in PDFPage.get_pages(fh):
+            page_interpreter.process_page(page)
+        text = fake_file_handle.getvalue().lower()
+        stop_words = set(stopwords.words(&#34;english&#34;))
+                #remove tags
+        text=re.sub(&#34;&amp;lt;/?.*?&amp;gt;&#34;,&#34; &amp;lt;&amp;gt; &#34;,text)
+                # remove special characters and digits
+        text=re.sub(&#34;(\\d|\\W)+&#34;,&#34; &#34;,text)
+                ##Convert to list from string
+        text = text.split()
+                #Lemmatisation
+        lem = WordNetLemmatizer()
+        text = [lem.lemmatize(word,pos=&#34;v&#34;) for word in text if not word in stop_words]
+        text = &#34; &#34;.join(text)
+    # close open handles
+    converter.close()
+    fake_file_handle.close()
+    if text:
+        return text
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Extracting top 100 keywords for different methodologies" duration="0">
+        <h2>Word Count </h2>
+<p>The count of occurance of every word in all the csv&#39;s is called word count. A word count csv file is generated to calculate the frequency of every word. Write the following code in the jupyter file:</p>
+<pre><code>import io
+import nltk
+import os
+import math
+import re
+import csv
+from pdfminer.converter import TextConverter
+from pdfminer.pdfinterp import PDFPageInterpreter
+from pdfminer.pdfinterp import PDFResourceManager
+from pdfminer.pdfpage import PDFPage
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.stem.porter import PorterStemmer
+from nltk.stem.wordnet import WordNetLemmatizer
+from pdfminer.layout import LAParams
+
+def extract_text_from_pdf(pdf_path):
+    resource_manager = PDFResourceManager()
+    fake_file_handle = io.StringIO()
+    codec = &#39;utf-8&#39;
+    laparams = LAParams()
+    converter = TextConverter(resource_manager, fake_file_handle,codec=codec, laparams=laparams)
+    page_interpreter = PDFPageInterpreter(resource_manager, converter)
+
+    with open(pdf_path, &#39;rb&#39;) as fh:
+        for page in PDFPage.get_pages(fh):
+            page_interpreter.process_page(page)
+        text = fake_file_handle.getvalue().lower()
+        stop_words = set(stopwords.words(&#34;english&#34;))
+                #remove tags
+        text=re.sub(&#34;&amp;lt;/?.*?&amp;gt;&#34;,&#34; &amp;lt;&amp;gt; &#34;,text)
+                # remove special characters and digits
+        text=re.sub(&#34;(\\d|\\W)+&#34;,&#34; &#34;,text)
+                ##Convert to list from string
+        text = text.split()
+                #Lemmatisation
+        lem = WordNetLemmatizer()
+        text = [lem.lemmatize(word,pos=&#34;v&#34;) for word in text if not word in stop_words]
+        text = &#34; &#34;.join(text)
+    # close open handles
+    converter.close()
+    fake_file_handle.close()
+    if text:
+        return text
+filePath=[]
+bloblist = []
+for file in os.listdir(&#34;C:/ADS/A1_HiringTrends/Data/To_Parse&#34;):
+    if file.lower().endswith(&#34;.pdf&#34;):
+        filePath.append(os.path.join(&#34;C:/ADS/A1_HiringTrends/Data/To_Parse&#34;, file))
+datatext=&#39;&#39;
+lem = WordNetLemmatizer()
+stem = PorterStemmer()
+for path in filePath:
+    datatext+=&#39;\n&#39;+extract_text_from_pdf(path).lower()
+stop_words = set(stopwords.words(&#39;english&#39;))
+
+word_tokens = word_tokenize(datatext)
+filtered_sentence = []
+for w in word_tokens:
+    if w not in stop_words:
+        #w=stem.stem(w)
+        filtered_sentence.append(w)
+fdist1 = nltk.FreqDist(filtered_sentence)
+wtr = csv.writer(open (&#39;C:/ADS/A1_HiringTrends/Data/Generated/By Algorithms/WordCount.csv&#39;, &#39;w&#39;), delimiter=&#39;,&#39;, lineterminator=&#39;\n&#39;)
+    #writer = csv.writer(f)
+x=1
+for row in fdist1.most_common(500):
+    wtr.writerow([str(x)] + [row[0]])
+    x+=1
+#f.close()
+
+
+</code></pre>
+<h2>Tf/ Idf </h2>
+<p>Transform a count matrix to a normalized tf or tf-idf representation</p>
+<p>Tf means term-frequency while tf-idf means term-frequency times inverse document-frequency. This is a common term weighting scheme in information retrieval, that has also found good use in document classification.</p>
+<p>The goal of using tf-idf instead of the raw frequencies of occurrence of a token in a given document is to scale down the impact of tokens that occur very frequently in a given corpus and that are hence empirically less informative than features that occur in a small fraction of the training corpus.</p>
+<p>The formula that is used to compute the tf-idf of term t is tf-idf(d, t) = tf(t) * idf(d, t), and the idf is computed as idf(d, t) = log [ n / df(d, t) ] + 1 (if smooth_idf=False), where n is the total number of documents and df(d, t) is the document frequency; the document frequency is the number of documents d that contain term t. The effect of adding &#34;1&#34; to the idf in the equation above is that terms with zero idf, i.e., terms that occur in all documents in a training set, will not be entirely ignored. (Note that the idf formula above differs from the standard textbook notation that defines the idf as idf(d, t) = log [ n / (df(d, t) + 1) ]).</p>
+<p>If smooth_idf=True (the default), the constant &#34;1&#34; is added to the numerator and denominator of the idf as if an extra document was seen containing every term in the collection exactly once, which prevents zero divisions: idf(d, t) = log [ (1 + n) / (1 + df(d, t)) ] + 1.</p>
+<p>Furthermore, the formulas used to compute tf and idf depend on parameter settings that correspond to the SMART notation used in IR as follows:</p>
+<p>Tf is &#34;n&#34; (natural) by default, &#34;l&#34; (logarithmic) when sublinear_tf=True. Idf is &#34;t&#34; when use_idf is given, &#34;n&#34; (none) otherwise. Normalization is &#34;c&#34; (cosine) when norm=&#39;l2&#39;, &#34;n&#34; (none) when norm=None.</p>
+<pre><code>import io
+import nltk
+import os
+
+tfidf = TfidfVectorizer(analyzer=&#39;word&#39;, stop_words=&#39;english&#39;, tokenizer=dummy_fun,
+    preprocessor=dummy_fun,
+    token_pattern=None, use_idf=True)
+response = tfidf.fit_transform(tokenized_doc)
+weights = np.asarray(response.mean(axis=0)).ravel().tolist()
+weights_df = pd.DataFrame({&#39;Term&#39;: tfidf.get_feature_names(), &#39;Weight&#39;: weights})
+weights_df.sort_values(by=&#39;Weight&#39;, ascending=False).head(500)
+#print(weights_df.sort_values(by=&#39;Weight&#39;, ascending=False).head(100))
+
+</code></pre>
+<h2>Text Rank</h2>
+<ul>
+<li>The first step would be to concatenate all the text contained in the articles</li>
+<li>Then split the text into individual sentences</li>
+<li>In the next step, we will find vector representation (word embeddings) for each and every sentence</li>
+<li>Similarities between sentence vectors are then calculated and stored in a matrix</li>
+<li>The similarity matrix is then converted into a graph, with sentences as vertices and similarity scores as edges, for sentence rank calculation</li>
+<li>Finally, a certain number of top-ranked sentences form the final summary</li>
+</ul>
+<p><img style="max-width: 465.30px" src="https://lh5.googleusercontent.com/_YdERbSsJ0FmSzqS9vLnukzGtrnwm0j4aesmiRAF9CRyGeYrIfB9Ue-Wx57_PfUN1lNbCABmc8s2qEWT462E5eBbnxG6SsvuDF8S4LgtXifGwiV9yYo_uWEFqBdZ47IsMIr89-fu"></p>
+<h2>Reviewing the data manually</h2>
+<p>The data is reviewed manually as there are still some anomalies left in the lists so you manually select top 100 most relevant words out of all the 3 lists obtained in the previous section.Now we have 3 lists of top 100 keywords.</p>
+<p>The code for Text Rank is given below</p>
+<pre><code>from __future__ import print_function
+import io
+import nltk
+import os
+import math
+import re
+import csv
+import editdistance
+import itertools
+import networkx as nx
+import numpy as np
+from pdfminer.converter import TextConverter
+from pdfminer.pdfinterp import PDFPageInterpreter
+from pdfminer.pdfinterp import PDFResourceManager
+from pdfminer.pdfpage import PDFPage
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.stem.porter import PorterStemmer
+from nltk.stem.wordnet import WordNetLemmatizer
+from pdfminer.layout import LAParams
+from summa import keywords
+import scipy
+import sys
+try:
+    reload(sys)
+    sys.setdefaultencoding(&#39;utf-8&#39;)
+except:
+    pass
+
+def extract_text_from_pdf(pdf_path):
+    resource_manager = PDFResourceManager()
+    fake_file_handle = io.StringIO()
+    codec = &#39;utf-8&#39;
+    laparams = LAParams()
+    converter = TextConverter(resource_manager, fake_file_handle,codec=codec, laparams=laparams)
+    page_interpreter = PDFPageInterpreter(resource_manager, converter)
+
+    with open(pdf_path, &#39;rb&#39;) as fh:
+        for page in PDFPage.get_pages(fh):
+            page_interpreter.process_page(page)
+        text = fake_file_handle.getvalue()
+        stop_words = set(stopwords.words(&#34;english&#34;))
+                #remove tags
+        text=re.sub(&#34;&amp;lt;/?.*?&amp;gt;&#34;,&#34; &amp;lt;&amp;gt; &#34;,text)
+                # remove special characters and digits
+        text=re.sub(&#34;(\\d|\\W)+&#34;,&#34; &#34;,text)
+                ##Convert to list from string
+        text = text.split()
+                #Lemmatisation
+        lem = WordNetLemmatizer()
+        text = [lem.lemmatize(word,pos=&#34;v&#34;) for word in text if not word in stop_words]
+        text = &#34; &#34;.join(text)
+    if text:
+        return text
+
+filePath=[]
+for file in os.listdir(&#34;C:/ADS/A1_HiringTrends/Data/To_Parse&#34;):
+    if file.lower().endswith(&#34;.pdf&#34;):
+        filePath.append(os.path.join(&#34;C:/ADS/A1_HiringTrends/Data/To_Parse&#34;, file))
+datatext=&#39;&#39;
+for path in filePath:
+    datatext+=&#39;\n&#39;+extract_text_from_pdf(path).lower()
+
+import codecs
+from textrank4zh import TextRank4Keyword
+
+text = datatext
+
+
+tr4w = TextRank4Keyword()
+tr4w.analyze(text=text,lower=True, window=3, pagerank_config={&#39;alpha&#39;:0.85})
+
+#for item in tr4w.get_keywords(200, word_min_len=2):
+#    print(item.word, item.weight)
+
+wtr = csv.writer(open (&#39;C:/ADS/A1_HiringTrends/Data/Generated/By Algorithms/Textrank.csv&#39;, &#39;w&#39;), delimiter=&#39;,&#39;, lineterminator=&#39;\n&#39;)
+x = 1
+for item in tr4w.get_keywords(500, word_min_len=2):
+    wtr.writerow([str(x)] + [item.word] + [item.weight])
+    x+=1
+
+
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Building a scraper to scrape the data from Northern Trust Bank" duration="0">
+        <p><strong>What is a scraper ?</strong></p>
+<p>Web scraping is a method of data mining from web sites that uses software to extract all the information available from the targeted site by simulating human behavior.</p>
+<h2><strong>Step 1</strong>: <strong>Find the URL you want to scrape.</strong></h2>
+<p><a href="https://careers.northerntrust.com/?cmpid=google-ppc-LP-**LP%20-%20TM%20-%20Human%20Resources-Northern%20Trust%20Bank%20Careers-Exact&cmpid=TM%20-%20Human%20Resources-ppc-googleNorthern%20Trust%20Bank%20Careers&gclid=EAIaIQobChMIw4zL_fOs4AIVjovICh1WEwXcEAAYASAAEgIbcPD_BwE" target="_blank"><paper-button class="colored" raised>Go to Northern Trust Careers</paper-button></a> </p>
+<h2><strong>Step 2 : Identify the structure of the sites HTML</strong></h2>
+<p>Once you&#39;ve found a site that you can scrape, you can use chrome&#39;s developer tools to inspect the site&#39;s HTML structure. This is important, because more than likely, you&#39;ll want to scrape data from certain HTML elements, or elements with specific classes or IDs. With the inspect tool, you can quickly identify which elements you need to target.</p>
+<h2><strong>Step 3</strong> : <strong>Install Beautiful Soup and Requests</strong></h2>
+<p>There are other packages and frameworks, like Scrapy. But Beautiful Soup allows you to parse the HTML in a a beautiful way, so that&#39;s what I&#39;m going to use. With Beautiful Soup, you&#39;ll also need to install a Request library, which will fetch the url content.</p>
+<p>If you aren&#39;t familiar with it, the Beautiful Soup documentation has a lot of great examples to help get you started as well.</p>
+<p>To install these two packages, you can simply use the pip installer.</p>
+<p><img style="max-width: 604.50px" src="https://lh4.googleusercontent.com/4km7E3x8Ky8KAqOD00Whpy88KVirJiVp8aLSi_guOZJsBQuI8C7J6BheanSCxKSbC8koa4YTCtdp78cberGXvAmoVAZcHuDvVL68UIW6lULtGycXl6Scn-dHjFMmopxnPRoGiXH4"></p>
+<p>and then...</p>
+<p><img style="max-width: 624.00px" src="https://lh6.googleusercontent.com/PuyLktOVX7u_I5qcwTkCaa3ltAhwfHA9dFbvA6RB_AcKq7n8TvwTA0B2iZ7sSGOx5q1jubljFZbcsG9DR7ZYfchcQRQV_FPUAq66aJMILGO4tT3Clv3gOPWMShqA_6d8Vgum9nuD"></p>
+<h2><strong>    </strong><strong>Step 4: Web Scraping Code .</strong></h2>
+<p>Here&#39;s how you structure the code:</p>
+<pre><code>import requests
+import csv
+from bs4 import BeautifulSoup
+import re
+from nltk.corpus import stopwords
+from nltk.stem.wordnet import WordNetLemmatizer
+import lxml
+import csv
+from collections import defaultdict
+import pandas as pd
+import numpy as np
+
+#from lxml import etree
+
+#import urllib
+from urllib.request import urlopen
+pages = []
+abcd = {}
+qq=[]
+count=0
+testDict = defaultdict(int)
+for i in range(1, 26):
+    url = &#39;https://careers.northerntrust.com/jobs/search/8420211/page&#39; + str(i) + &#39;.htm&#39;
+    #print(url)
+    pages.append(url)
+dataset=[]
+counter = 1
+link=[]
+#print(pages)
+count = 0
+for item in pages:
+    page = requests.get(item)
+    soup = BeautifulSoup(page.text, &#39;html.parser&#39;)
+
+#print(soup)
+
+    hash_links = soup.find(class_=&#39;job_filters_toggle jJobFiltersToggle&#39;)
+    hash_links.decompose()
+
+    job_name_list = soup.find(class_=&#39;info_listings jJobResultsListHldr&#39;)
+    job_name_list_items = job_name_list.find_all(&#39;a&#39;)
+
+    for job_name in job_name_list_items:
+        #print(job_name.prettify())
+        links = job_name.get(&#39;href&#39;)
+        link.append(links)
+        page1 = requests.get(links)
+        soup1 = BeautifulSoup(page1.text, &#39;html.parser&#39;)
+        ignore = soup.find(&#34;div&#34;,[&#34;flg_hldr&#34;,&#34;info_box&#34;,&#34;jFooter compact&#34;])
+        ignore.decompose()
+        #ignore1 = soup.find(class_=&#39;info_box&#39;)
+        #ignore1.decompose()
+        #ignore2 = soup.find(class_=&#39;jFooter compact&#39;)
+        #ignore2.decompose()
+        content = soup1.find(class_=&#39;jBlock&#39;)
+        data = content.get_text()
+        delete = soup1.find(&#34;span&#34;,&#34;field_value font_header_light&#34;)
+        delete.decompose()
+        idjob = soup1.find(&#34;span&#34;,&#34;field_value&#34;)
+        job_id=idjob.get_text()
+        qq.append(job_id)
+        stop_words = set(stopwords.words(&#34;english&#34;))
+                #remove tags
+        data=re.sub(&#34;&amp;lt;/?.*?&amp;gt;&#34;,&#34; &amp;lt;&amp;gt; &#34;,data)
+                # remove special characters and digits
+        data=re.sub(&#34;(\\d|\\W)+&#34;,&#34; &#34;,data)
+                ##Convert to list from string
+        data = data.split()
+                #Lemmatisation
+        lem = WordNetLemmatizer()
+        data = [lem.lemmatize(word) for word in data if not word in stop_words]
+        data = &#34; &#34;.join(data)
+        dataset.append(data)
+
+
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Building a scraper to scrape the data from M&amp;T Bank" duration="0">
+        <h2><strong>Installation of selenium web driver</strong></h2>
+<p><img style="max-width: 624.00px" src="https://lh6.googleusercontent.com/H3Xg3vKbH23x2NEWXb0iVQEPVYigxBT0LfVeXc6YBmnSFeHOlz_VeGZwSHWaqj-D11Xc869Wk1T7Y4QlJPmh2YHElAx5ddtNlBCUXel0__bMlobr6uNZ1OHHFDqdW20-5cc_DhZq"><strong>Why selenium web driver is needed ?</strong></p>
+<p>The data on the website of M&amp;T bank is generated dynamically by Java Script Code so  Selenium Driver is used to automate and control a full fledged web browser.</p>
+<h2><strong>Why is there a need for timer in this website?</strong></h2>
+<p>There is dynamic loading of content in the M&amp;T bank website due to which all the links can not be transversed in a single transversal  so you have to use a timer , counter and a scroller to access all the links.</p>
+<h2><strong>What is PhantomJS  ?</strong></h2>
+<p>PhantomJS is a scripted headless browser used for automating web page interaction. PhantomJS along with selenium is used for headless automation which enables you to run the test for different websites.</p>
+<p><strong>How to build the scraper ?</strong></p>
+<p>Visit M&amp;T Careers by going to the link given below</p>
+<p><a href="https://www.mtb.com/careers" target="_blank"><paper-button class="colored" raised>Go to M&amp;T Careers</paper-button></a> </p>
+<ul>
+<li>Use PhantomJS to fetch the inner content by running the java script code.</li>
+<li>Scroll down to the bottom of the page through selenium web driver.</li>
+<li>Traverse through each of the links generated through Step 3.</li>
+<li>Fetch content such as job description , job position , locations from every traversed links.</li>
+</ul>
+<p>The code for scraping information for M&amp;T bank is given below</p>
+<pre><code>from selenium import webdriver
+from bs4 import BeautifulSoup as bs
+import time
+import sys
+import csv
+import re
+import pandas as pd
+from nltk.corpus import stopwords
+from nltk.stem.wordnet import WordNetLemmatizer
+
+def fetchJobData(link,fileNames,destFile,institutionName,counter):
+    driver = webdriver.PhantomJS(&#39;C:/ADS/A1_HiringTrends/Support/phantomjs/phantomjs&#39;)
+    driver.get(link)
+    counterVal=counter
+
+    time.sleep(10)
+    htmlJobContent = driver.execute_script(&#34;return document.body.innerHTML;&#34;)
+    soup = bs(htmlJobContent,&#39;html.parser&#39;)
+    divClass=soup.find(&#39;div&#39;,attrs={&#39;class&#39;:&#39;GWTCKEditor-Disabled&#39;,&#39;dir&#39;:&#39;ltr&#39;})
+    headVal=divClass.text
+    ulClass=soup.find_all(&#39;ul&#39;,attrs={&#39;class&#39;:&#39;WPFO WGGO&#39;,&#39;role&#39;:&#39;presentation&#39;})[2]
+    try:
+        location=str(ulClass)
+        loc=location.find(&#39;&lt;b&gt;Location&lt;/b&gt;&#39;)
+        loc=location.find(&#39;&lt;/h1&gt;&#39;,loc)+5
+        loc2=location.find(&#39;&lt;p&#39;,loc)
+        location=location[loc:loc2]
+        data=&#39;&#39;
+        for x in ulClass:
+            data+=&#39; &#39;+x.text
+        data=data.lower()
+        driver.close()
+        driver.quit()
+        stop_words = set(stopwords.words(&#34;english&#34;))
+        data=re.sub(&#34;&amp;lt;/?.*?&amp;gt;&#34;,&#34; &amp;lt;&amp;gt; &#34;,data)
+                # remove special characters and digits
+        data=re.sub(&#34;(\\d|\\W)+&#34;,&#34; &#34;,data)
+                ##Convert to list from string
+        data = data.split()
+        #Lemmatisation
+        stop_words = set(stopwords.words(&#34;english&#34;))
+        lem = WordNetLemmatizer()
+        data = [lem.lemmatize(word,pos=&#34;v&#34;) for word in data if not word in stop_words]
+        data = &#34; &#34;.join(data)
+        id=1
+
+        for fileN in fileNames:
+            valToAppend=[counterVal,institutionName,link,headVal,location,id]
+            with open(fileN, newline=&#39;&#39;) as myFile:
+                reader = csv.reader(myFile)
+                for row in reader:
+                    count=0
+                    valtosearch=str(row[1])
+                    count = sum(1 for match in re.finditer(valtosearch.lower(), data.lower()))
+                    valToAppend.append(str(count))
+            with open(destFile, &#39;a&#39;) as f:
+                writer = csv.writer(f)
+                writer.writerow(valToAppend)
+                counterVal+=1
+            id+=1
+    except:
+        with open(&#39;C:/ADS/A1_HiringTrends/Data/Generated/By Algorithms/Unresolved.csv&#39;, &#39;a&#39;) as unresolved:
+            writer = csv.writer(unresolved)
+            writer.writerow([link])
+        driver.close()
+        driver.quit()
+    return counterVal
+
+driver = webdriver.PhantomJS(&#39;C:/ADS/A1_HiringTrends/Support/phantomjs/phantomjs&#39;)
+driver.get(&#34;https://mtb.wd5.myworkdayjobs.com/MTB&#34;)
+# This will get the initial html - before javascript
+# This will get the html after on-load javascript
+time.sleep(10)
+html2 = driver.execute_script(&#34;return document.body.innerHTML;&#34;)
+
+soup = bs(html2,&#39;html.parser&#39;)
+totalcount=0
+for i,tag in enumerate(soup.find_all(&#39;span&#39;,attrs={&#39;class&#39;:&#39;gwt-InlineLabel WF2N WG2N&#39;})):
+    totalcount=int(tag.text.replace(&#34;Results&#34;,&#34;&#34;).strip())
+    break
+print(totalcount)
+count=0
+totalcount+=50
+while count&lt;totalcount:
+    driver.execute_script(&#34;window.scrollTo(0, document.body.scrollHeight);&#34;)
+    time.sleep(5)
+    count+=50
+html2 = driver.execute_script(&#34;return document.body.innerHTML;&#34;)
+driver.close()
+soup = bs(html2,&#39;html.parser&#39;)
+driver.quit()
+
+link=&#39;&#39;
+unsolved=[]
+counter=1
+for i,tag in enumerate(soup.find_all([&#39;div&#39;,&#39;span&#39;],attrs={&#39;class&#39;:[&#39;gwt-Label WOTO WISO&#39;,&#39;gwt-InlineLabel WM-F WLYF&#39;]})):
+    if(i%2==0):
+        link=&#39;&#39;
+        if tag.has_attr(&#39;aria-label&#39;):
+            link=tag[&#39;aria-label&#39;]
+        else:
+            continue
+    else:
+        if(link==&#39;&#39;):
+            continue
+        else:
+            link=&#39;https://mtb.wd5.myworkdayjobs.com/en-US/MTB/job/&#39;+tag.text.split(&#39;|&#39;)[0].strip().replace(&#39; &#39;,&#39;-&#39;).replace(&#39;.&#39;,&#39;&#39;).replace(&#39;&amp;&#39;,&#39;&#39;).replace(&#39;(&#39;,&#39;&#39;).replace(&#39;)&#39;,&#39;&#39;).replace(&#39;,&#39;,&#39;&#39;).replace(&#39;/&#39;,&#39;&#39;).replace(&#39;\\&#39;,&#39;&#39;)+&#39;/&#39;+link.replace(&#39;- Bankruptcy&#39;,&#39;&#39;).replace(&#39; &#39;,&#39;-&#39;).replace(&#39;.&#39;,&#39;&#39;).replace(&#39;&amp;&#39;,&#39;-&#39;).replace(&#39;(&#39;,&#39;-&#39;).replace(&#39;)&#39;,&#39;-&#39;).replace(&#39;,&#39;,&#39;-&#39;).replace(&#39;/&#39;,&#39;-&#39;).replace(&#39;\\&#39;,&#39;-&#39;)+&#39;_&#39;+tag.text.split(&#39;|&#39;)[1].strip()
+            fileNames=[&#39;C:/ADS/A1_HiringTrends/Data/Generated/By Algorithms/Textrank_top100.csv&#39;,&#39;C:/ADS/A1_HiringTrends/Data/Generated/By Algorithms/TF-IDF_top100.csv&#39;,&#39;C:/ADS/A1_HiringTrends/Data/Generated/By Algorithms/WordCount_top100.csv&#39;]
+            destFile=&#39;C:/ADS/A1_HiringTrends/Data/Generated/By Algorithms/M&amp;T_Scraped.csv&#39;
+            instName=&#39;M&amp;T Bank&#39;
+            try:
+                print(link)
+                counter=fetchJobData(link,fileNames,destFile,instName,counter)
+            except:
+                print(sys.exc_info()[0])
+                try:
+                    print(link+&#39;-1&#39;)
+                    counter=fetchJobData(link+&#39;-1&#39;,fileNames,destFile,instName,counter)
+                except:
+                    unsolved.append(link)
+                    with open(&#39;C:/ADS/A1_HiringTrends/Data/Generated/By Algorithms/Unresolved.csv&#39;, &#39;a&#39;) as unresolved:
+                        writer = csv.writer(unresolved)
+                        writer.writerow([link])
+                    print(&#39;*&#39;*50+&#39;\nUnsolved:&#39;+link+&#39;\n&#39;+&#39;*&#39;*50)
+                    print(sys.exc_info()[0])
+print(&#39;End&#39;)
+
+
+
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Fetching requirements for analysis from the websites" duration="0">
+        <h2><strong>Comparison of data collected from the bank websites to the lists obtained in former sections. </strong></h2>
+<p>The data obtained from the bank websites is compared with the data obtained from the former lists of fintech and the count of occurence of each word is appended in a new csv file.</p>
+<pre><code>                 
+import requests
+import csv
+from bs4 import BeautifulSoup
+import re
+from nltk.corpus import stopwords
+from nltk.stem.wordnet import WordNetLemmatizer
+import lxml
+import csv
+from collections import defaultdict
+import pandas as pd
+import numpy as np
+
+#from lxml import etree
+
+#import urllib
+from urllib.request import urlopen
+pages = []
+abcd = {}
+qq=[]
+count=0
+testDict = defaultdict(int)
+for i in range(1, 26):
+    url = &#39;https://careers.northerntrust.com/jobs/search/8420211/page&#39; + str(i) + &#39;.htm&#39;
+    #print(url)
+    pages.append(url)
+dataset=[]
+counter = 1
+link=[]
+#print(pages)
+count = 0
+for item in pages:
+    page = requests.get(item)
+    soup = BeautifulSoup(page.text, &#39;html.parser&#39;)
+
+#print(soup)
+
+    hash_links = soup.find(class_=&#39;job_filters_toggle jJobFiltersToggle&#39;)
+    hash_links.decompose()
+
+    job_name_list = soup.find(class_=&#39;info_listings jJobResultsListHldr&#39;)
+    job_name_list_items = job_name_list.find_all(&#39;a&#39;)
+
+    for job_name in job_name_list_items:
+        #print(job_name.prettify())
+        links = job_name.get(&#39;href&#39;)
+        link.append(links)
+        page1 = requests.get(links)
+        soup1 = BeautifulSoup(page1.text, &#39;html.parser&#39;)
+        ignore = soup.find(&#34;div&#34;,[&#34;flg_hldr&#34;,&#34;info_box&#34;,&#34;jFooter compact&#34;])
+        ignore.decompose()
+        #ignore1 = soup.find(class_=&#39;info_box&#39;)
+        #ignore1.decompose()
+        #ignore2 = soup.find(class_=&#39;jFooter compact&#39;)
+        #ignore2.decompose()
+        content = soup1.find(class_=&#39;jBlock&#39;)
+        data = content.get_text()
+        delete = soup1.find(&#34;span&#34;,&#34;field_value font_header_light&#34;)
+        delete.decompose()
+        idjob = soup1.find(&#34;span&#34;,&#34;field_value&#34;)
+        job_id=idjob.get_text()
+        qq.append(job_id)
+        stop_words = set(stopwords.words(&#34;english&#34;))
+                #remove tags
+        data=re.sub(&#34;&amp;lt;/?.*?&amp;gt;&#34;,&#34; &amp;lt;&amp;gt; &#34;,data)
+                # remove special characters and digits
+        data=re.sub(&#34;(\\d|\\W)+&#34;,&#34; &#34;,data)
+                ##Convert to list from string
+        data = data.split()
+                #Lemmatisation
+        lem = WordNetLemmatizer()
+        data = [lem.lemmatize(word) for word in data if not word in stop_words]
+        data = &#34; &#34;.join(data)
+        dataset.append(data)
+        count+=1
+
+print(count)
+#dataset = [&#39;hi my name is financial customer financial&#39;, &#39;hii hii hii nmy name is customer customer customer&#39;]
+#print(dataset)
+x = 1
+abc=[]
+df = pd.read_csv(&#34;C:/ADS/A1_HiringTrends/Data/Generated/By Algorithms/WordCount_top100.csv&#34;,header=None,names=[&#34;0&#34;,&#34;words&#34;])
+#df = pd.read_csv(&#34;Z:/ADS/a/textrank_final.csv&#34;)
+with open(&#39;C:/ADS/A1_HiringTrends/Data/Generated/By Algorithms/WordCount_top100.csv&#39;, newline=&#39;&#39;) as myFile:
+    reader = csv.reader(myFile)
+    for row in reader:
+        abc.append(row[1])
+    #for row in reader:
+        #print(row[1])
+#print(abc)
+for text in dataset:
+        #print(text)
+    thisline = text.split(&#34; &#34;);
+    #print(thisline)
+    for q in abc:
+        #print(row)
+        for wd in thisline:
+            #print(wd)
+            if q == wd:
+                if wd in abcd:
+                    abcd[wd] +=1
+
+                else:
+                    abcd.update({wd:1})
+                        #abcd[wd] = 1
+    #print(abcd)
+    #x = 0
+    #df = pd.read_csv(&#34;Z:/ADS/a/textrank_final.csv&#34;,header=None,names=[&#34;ranking&#34;,&#34;words&#34;,&#34;rate&#34;])
+    df[x]= df[&#39;words&#39;].map(abcd)
+    x +=1
+    abcd.clear()
+#df
+#df2 = df.drop(df.column2)
+df2_transposed = df.transpose() # or df2.transpose()
+df2_transposed2 = df2_transposed.drop(df2_transposed.index[1])
+
+df2_transposed2.insert(loc=0, column=&#39;Job No&#39;,value=&#39;&#39;)
+df2_transposed2.insert(loc=1, column=&#39;Institutation&#39;,value=&#39;&#39;)
+df2_transposed2.insert(loc=2, column=&#39;URL(url of job posting)&#39;,value=&#39;&#39;)
+df2_transposed2.insert(loc=3, column=&#39;List Id&#39;,value=&#39;&#39;)
+df2_transposed2
+q=1
+m=1
+o=1
+for a in qq:
+    df2_transposed2.iloc[m,0] = a
+    m+=1
+for l in link:
+    df2_transposed2.iloc[q,2] = l
+    q+=1
+inst = &#39;northern trust&#39;
+for o in range(o,count+1):
+    df2_transposed2.iloc[o,3] = &#39;1&#39;
+    df2_transposed2.iloc[o,1] = inst
+    o+=1
+df2_transposed2 = df2_transposed2.replace(np.nan, 0)
+df2_transposed2.to_csv(&#34;C:/ADS/A1_HiringTrends/Data/Generated/By Algorithms/final_files/WordCount_final_file.csv&#34;,index=False, encoding=&#39;utf8&#39;)
+
+
+
+</code></pre>
+<p>The CSV file generated should look like the following </p>
+<p><img style="max-width: 624.00px" src="https://lh4.googleusercontent.com/oovVmcKrK1w40xLNENhx_ihMUU3suTZmb9u9ouW4PAhN3rCGTNJVv9Tl2Cpw_b0CRdyMXpdEr5CBfTj25k43KPNmG3hobvpiLsAZdEKQUGD-QNFsLZRrfrqXTkj1sQ6VYBouP2to"></p>
+<h2><strong>Key Areas </strong></h2>
+<p>Ordered the key areas based on the number of words .This is done by slicing the csv files made in the previous sections. For this analysis we would need The bucket ID and the key areas.For Example finance had the highest count so the size of finance word would be largest and then the size of words keep decreasing according to their count.</p>
+<p><img style="max-width: 624.00px" src="https://lh3.googleusercontent.com/_jfdLtoKhde3muhEtVDYuf4rikbiEcw--XyGzBa5rNlhDnlhJukzzqYyGqWdy0lgLJ7GmaawR8EU4NNqA7f8YpqsMan-d7JkDRq_MEEbs4FGtI-oZZDDSlp-GoXk8xMqSLre2ych"></p>
+<h2><strong>Key Hiring Trends </strong></h2>
+<p>After analysing the words on the basis of their count.Key areas can be calculated on the basis of the frequency of words. Compare the parsed data obtained from scraping the websites to our former csv&#39;s. Then obtain the frequency of every word.The percentage of the total of the count of all the words is calculated.</p>
+<p><img style="max-width: 624.00px" src="https://lh3.googleusercontent.com/8yexgT5-RepKK97oGmduwcHsOncmrmsAPNS8FQFjTEU9-qaE5TZHto37TcIuCnONNPV5UR2DhK2rmTOSPoDt7tGdpgfny7KCgfaJXanH4tVDjZU5yk0lyX75oBLFGcjEDYVSwh7q"></p>
+<h2><strong>Word Clouds </strong></h2>
+<p>The words with the most frequency are the largest in size.The data is filtered on the basis of frequency of the words occurrence in both the institutions.</p>
+<p><img style="max-width: 624.00px" src="https://lh6.googleusercontent.com/88EYA2YlfF01Uh_XwqHFKcjo5bc2QhGLS3cuGKODt-7p5wSXVMSD5-2a0FKtWXHof9N-Cq2GaVqpzhTUNlKK61ko7UGFPPN8crAQdgyxqNM5gZW0ruUbctOfj1dKssg0Q5daQv1N"></p>
+<p><img style="max-width: 624.00px" src="https://lh4.googleusercontent.com/0loQrsHkQYy4DEOOBlkI4Zzy88iuEqTKwvyhH5BeT6On0ALHmWBf6Y1uGdjsbJNWJO7svS9lqLBCYgbnxcd1i28UfNs59iJhKg_iHu6HmhP8OwWuvv1ZKYdObmOytYUJ1aDS5v-I"></p>
+<p><strong>Top 10 location of job openings</strong></p>
+<p>Slice the scraped data observed from the websites into ID , institution , Position and location. So job openings are analysed on the basis of the sliced data. Top 10 positions with the job openings are displayed in the bar chart.<img style="max-width: 624.00px" src="https://lh4.googleusercontent.com/3FyE8VuQKjjC5Ji53g-hbtm3FZaBcqaedMeEHPZtS4SwIRXlVB43gl7bSdo6wVB-0CbRjSC-L-16vTlFUkKL8naD6t7mxnLpYuiGrbNlJpfvyrwOWeXqbjoxkLRbdYfXPpusyKve"></p>
+<h2><strong>Classification of jobs by sector</strong></h2>
+<p>Slice the scraped data observed from the websites into ID , institution , Position and location. So job openings are analysed on the basis of the sliced data.Then the classification of all the jobs is displayed in the bar graph.</p>
+<p><img style="max-width: 624.00px" src="https://lh6.googleusercontent.com/06Q_RJ7flTlGED2btBl5nybwqoLoJLaq_djJlZsabZpVBGgNbcuhEBD3z_aORD-Vi7P9HUPdro0FdshGVEzom5BPlL9yAUc6FOfmsg_q7dRiylBYUJ-GiJK81MaQAn7V4xX7PjQv"></p>
+<h2><strong>Northern Trust Key Areas</strong></h2>
+<p>Contribution of a specific key area for Northern Trust Bank. This can be displayed by the following pie chart <img style="max-width: 624.00px" src="https://lh5.googleusercontent.com/BEDK6ZRTznERXhUsVBYNkzHF0uyuX3wDOkYdSKbTabHMJzAOMaMaDgSNb7J-Ku_DPmAVBv1UliZQeIoqMuDHQmiD3DFDfCb6NbVmmjl58k6jf8rQNFxsfnEaOLrZ7y1l3zw5a9h9"></p>
+<h2><strong>M &amp; T Bank Key Areas</strong></h2>
+<p>Contribution of a specific key area for M &amp; T Bank. This can be displayed by the following pie chart.<img style="max-width: 624.00px" src="https://lh5.googleusercontent.com/PBW0fHNqofBacXyU_Ir6I2G8zBT00kgM91-rYPi49xyR7lAy9wyQP2YPQeWOAMmtZKTt-Qqrgtq7lJAbD5lYmtcqQoySqqwZN1S4GZVLM3BkXwl6CtmD-0PGQV8SI8H59X16agkR"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Interpretation of analysis" duration="0">
+        <p><strong>What we have used for our interpretation<br></strong>1.Total Scores of each word based on their Number of Occurrence in each Link<br>2.These total scores have been segmented by Institutions<br>3.Also, we have taken into consideration, the most common words (164 in our case) from the pool of 300 words (Top 100 retrieved from each Algorithm)<br>4.We bucketed these 164 words based on the Most Relevant Categories (i.e Our Bucket Headers)<br>5.We scraped the websites of both banks and also retrieved a list of Job Openings, Job Categories and then we took this List and arranged them based on Job Categories (which is our another bucket of data)<br><br><strong>FOR PART 3</strong></p>
+<h3><br>KEY AREAS</h3>
+<p>The Key Areas drawn from our interpretation using Part 1 Are the Segmentation of Buckets based on the Keywords</p>
+<h3><br>KEY HIRING TRENDS</h3>
+<p>Based on the Keywords we retrieved in Part 1, when we ran them against the data retrieved by web scraping in Part 2, we could see that for both the banks, there are a certain set of Keywords that occurred the greatest number of times. It could be interpreted by the Word Clouds we have generated.  But what&#39;s more interesting is that, when we visualized the data for the &#34;Job Categories by the number of Openings&#34; and compared it against &#34;Key areas based on Word Frequency&#34;, we find out similar results which brings us to a conclusion that our analysis is accurate<br></p>
+<h3>OTHER INTERPRETATION</h3>
+<p>We have other visualizations where we are looking at the contribution of our key areas for both the Institutions individually. Also we can see that New York has the most number of Job openings for both institutions.<br></p>
+
+
+      </google-codelab-step>
+    
+
+    
+
+  </google-codelab>
+
+  <script async>
+    document.addEventListener("DOMContentLoaded", function() {
+      var pubBtn = document.getElementById('publishButton');
+      var pubForm = document.getElementById('publishForm');
+      var pubStatus = document.getElementById('publishButtonStatus');
+
+      pubForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        pubBtn.disabled = true;
+        pubStatus.textContent = '';
+        pubStatus.classList.remove('success');
+        pubStatus.classList.remove('error');
+
+        var req = new XMLHttpRequest();
+
+        var onError = function() {
+          var msg = 'Request failed';
+          if (req.statusText) {
+            msg += ' with status "' + req.statusText + '"';
+          }
+          if (req.responseText) {
+            msg += ': ' + req.responseText;
+          }
+          pubStatus.classList.add('error');
+          pubStatus.textContent = msg;
+          pubBtn.disabled = false;
+        };
+
+        req.addEventListener('load', function() {
+          if (req.status != 200) {
+            onError();
+            return;
+          }
+          pubStatus.textContent = ('Publication request submitted' +
+            ' (reload preview to re-publish)');
+          pubStatus.classList.add('success');
+        });
+        req.addEventListener('error', onError);
+        req.addEventListener('abort', onError);
+        req.open("post", pubForm.action);
+        req.send(new FormData(pubForm));
+      });
+    });
+  </script>
+
+  <script src="/static/native-shim.js"></script>
+  <script src="/static/custom-elements.min.js"></script>
+  <script src="/static/prettify.js"></script>
+  <script src="/static/codelab-elements.js"></script>
+</body>
+</html>
