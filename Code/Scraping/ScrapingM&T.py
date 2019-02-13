@@ -9,7 +9,7 @@ from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 
 def fetchJobData(link,fileNames,destFile,institutionName,counter):
-    driver = webdriver.PhantomJS('C:/ADS/A1_HiringTrends/Support/phantomjs/phantomjs')
+    driver = webdriver.PhantomJS('C:/ADS/A1_HiringTrends/Support/phantomjs/phantomjs.exe')
     driver.get(link)
     counterVal=counter
 
@@ -67,7 +67,7 @@ def fetchJobData(link,fileNames,destFile,institutionName,counter):
         driver.quit()
     return counterVal
 
-driver = webdriver.PhantomJS('C:/ADS/A1_HiringTrends/Support/phantomjs/phantomjs')
+driver = webdriver.PhantomJS('C:/ADS/A1_HiringTrends/Support/phantomjs/phantomjs.exe')
 driver.get("https://mtb.wd5.myworkdayjobs.com/MTB")
 # This will get the initial html - before javascript
 # This will get the html after on-load javascript
