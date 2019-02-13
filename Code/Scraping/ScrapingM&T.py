@@ -17,8 +17,9 @@ def fetchJobData(link,fileNames,destFile,institutionName,counter):
     htmlJobContent = driver.execute_script("return document.body.innerHTML;")
     soup = bs(htmlJobContent,'html.parser')
     divClass=soup.find('div',attrs={'class':'GWTCKEditor-Disabled','dir':'ltr'})
+    #fetch Job Posting
     headVal=divClass.text
-    ulClass=soup.find_all('ul',attrs={'class':'WPFO WGGO','role':'presentation'})[2]
+    ulClass=soup.find_all('div',attrs={'class':'WIEY WMFY WKCY WLFY WE5 WJEY'})[1]    
     try:
         location=str(ulClass)
         loc=location.find('<b>Location</b>')
@@ -75,7 +76,7 @@ html2 = driver.execute_script("return document.body.innerHTML;")
 
 soup = bs(html2,'html.parser')
 totalcount=0
-for i,tag in enumerate(soup.find_all('span',attrs={'class':'gwt-InlineLabel WF2N WG2N'})):
+for i,tag in enumerate(soup.find_all('span',attrs={'class':'gwt-InlineLabel WG2N WH2N'})):
     totalcount=int(tag.text.replace("Results","").strip())
     break
 print(totalcount)
@@ -93,7 +94,7 @@ driver.quit()
 link=''
 unsolved=[]
 counter=1
-for i,tag in enumerate(soup.find_all(['div','span'],attrs={'class':['gwt-Label WOTO WISO','gwt-InlineLabel WM-F WLYF']})):
+for i,tag in enumerate(soup.find_all(['div','span'],attrs={'class':['gwt-Label WPTO WJSO','gwt-InlineLabel WM-F WLYF']})):
     if(i%2==0):
         link=''
         if tag.has_attr('aria-label'):
