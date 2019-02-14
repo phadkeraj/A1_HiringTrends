@@ -110,18 +110,14 @@ for i,tag in enumerate(soup.find_all(['div','span'],attrs={'class':['gwt-Label W
             destFile='C:/ADS/A1_HiringTrends/Data/Generated/By Algorithms/M&T_Scraped.csv'
             instName='M&T Bank'
             try:
-                print(link)
                 counter=fetchJobData(link,fileNames,destFile,instName,counter)
             except:
                 print(sys.exc_info()[0])
                 try:
-                    print(link+'-1')
                     counter=fetchJobData(link+'-1',fileNames,destFile,instName,counter)
                 except:
                     unsolved.append(link)
                     with open('C:/ADS/A1_HiringTrends/Data/Generated/By Algorithms/Unresolved.csv', 'a') as unresolved:
                         writer = csv.writer(unresolved)
                         writer.writerow([link])
-                    print('*'*50+'\nUnsolved:'+link+'\n'+'*'*50)
-                    print(sys.exc_info()[0])
 print('End')
